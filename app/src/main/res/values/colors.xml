@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#F0F0F0</color>
+    <color name="red">#FF0000</color>
+
+    <color name="button">#339FFF</color>
+    <color name="trans">#4D000000</color>
+    <color name="typeteam">#565656</color>
+    <color name="hint">#777777</color>
+    <color name="colorBackground">#151B29</color>
+    <color name="colorYellow">#F5FA55</color>
+    <color name="note">#FDFAC4</color>
+    <color name="redcard">#ff8c90</color>
+    <color name="yellowcard">#fff262</color>
+    <color name="green_nood">#87ff73</color>
+</resources>
