@@ -1,40 +1,16 @@
 package com.thanachat.myfootball;
 
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.gjiazhe.panoramaimageview.GyroscopeObserver;
-import com.gjiazhe.panoramaimageview.PanoramaImageView;
-import com.thanachat.myfootball.R;
-
-public class GmapPSU extends FragmentActivity {
-
-    private GyroscopeObserver gyroscopeObserver;
+public class Gmap7Soc extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gmap_psu);
-        gyroscopeObserver = new GyroscopeObserver();
-        gyroscopeObserver.setMaxRotateRadian(Math.PI/3);
-
-        PanoramaImageView panoramaImageView = (PanoramaImageView)findViewById(R.id.panorama_image_view);
-        panoramaImageView.setGyroscopeObserver(gyroscopeObserver);
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        gyroscopeObserver.register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        gyroscopeObserver.unregister();
+        setContentView(R.layout.activity_gmap7_soc);
     }
 
     @Override
@@ -57,5 +33,4 @@ public class GmapPSU extends FragmentActivity {
     }
 
     //return super.onOptionsItemSelected(item);
-
 }

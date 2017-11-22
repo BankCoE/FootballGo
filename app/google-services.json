@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "189534747141",
+    "firebase_url": "https://football-go.firebaseio.com",
+    "project_id": "football-go",
+    "storage_bucket": "football-go.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189534747141:android:926048fef17883fe",
+        "android_client_info": {
+          "package_name": "com.thanachat.myfootball"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "189534747141-uvsfdvn6cuhb3fr7drhm9bunc5ct00d7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thanachat.myfootball",
+            "certificate_hash": "7400b8f2b8d1c05a9c5af8160f1347f951d17f84"
+          }
+        },
+        {
+          "client_id": "189534747141-0h9ajfrj0ldc5gtv3avl0r914onqsb9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIS4WeuCD8pYiuSfCfFcKXt_jk6nDVMqA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "189534747141-0h9ajfrj0ldc5gtv3avl0r914onqsb9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

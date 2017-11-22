@@ -1,10 +1,21 @@
 package com.thanachat.myfootball;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.thanachat.myfootball.R;
 
@@ -16,10 +27,13 @@ public class MainActivity extends AppCompatActivity {
     int menu4 = 0;
     int menu5 = 0;
     int menu6 = 0;
+    int menu7 = 0;
+    boolean connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
     }
 
@@ -113,6 +127,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public  void openls(View v){
+        ImageButton img7 = (ImageButton)findViewById(R.id.menu_7);
+        ImageButton cimg7 = (ImageButton)findViewById(R.id.mls);
+        if(menu7 == 0){
+            cimg7.setImageResource(R.drawable.nmlsc);
+            img7.setVisibility(View.VISIBLE);
+            menu7 = 1;
+        }
+        else{
+            cimg7.setImageResource(R.drawable.nmlso);
+            img7.setVisibility(View.GONE);
+            menu7 = 0;
+        }
+    }
+
     //==========================================================================================
 
     public void enterBasic (View v){
@@ -141,8 +170,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterCommit (View v){
-        Intent goCommit = new Intent(this, CommitActivity.class);
+        Intent goCommit = new Intent(this, ComActivity.class);
         startActivity(goCommit);
+    }
+
+    public void enterGuide (View v){
+        Intent goGuide = new Intent(this, GuideActivity.class);
+        startActivity(goGuide);
+    }
+
+    public void enterLS (View v){
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            Toast.makeText(MainActivity.this,
+                    "Connect!", Toast.LENGTH_SHORT).show();
+            connected = true;
+            Intent goLS = new Intent(this, LSActivity.class);
+            startActivity(goLS);
+        }
+        else{
+            connected = false;
+            Toast.makeText(MainActivity.this,
+                    "Disconnect!", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        }
+
     }
 
 

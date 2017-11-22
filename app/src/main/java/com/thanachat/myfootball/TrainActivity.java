@@ -175,7 +175,7 @@ public class TrainActivity extends AppCompatActivity {
         }
 
         Toast.makeText(TrainActivity.this,
-                "Saved", Toast.LENGTH_LONG).show();
+                "Saved", Toast.LENGTH_SHORT).show();
 
         finish();
     }
