@@ -23,54 +23,77 @@
             android:background="@color/gray"
             android:paddingTop="40dp"
             android:orientation="vertical">
-            <!-- Home Team -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Home team name :"
-                    android:textSize="16dp"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter Team Name."
-                    android:textColorHint="@color/trans"
-                    android:textSize="14dp"
-                    android:imeOptions="actionDone"
-                    android:id="@+id/home_name"/>
-            </LinearLayout>
 
-            <!-- Away Team -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Away team name :"
-                    android:textSize="16dp"/>
-                <EditText
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:id="@+id/settingbar">
+                <!-- Home Team -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Team Name."
-                    android:textColorHint="@color/trans"
-                    android:textSize="14dp"
-                    android:imeOptions="actionDone"
-                    android:id="@+id/away_name"/>
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Home team name :"
+                        android:textSize="16dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Team Name."
+                        android:textColorHint="@color/trans"
+                        android:textSize="14dp"
+                        android:imeOptions="actionDone"
+                        android:id="@+id/home_name"/>
+                </LinearLayout>
+
+                <!-- Away Team -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Away team name :"
+                        android:textSize="16dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Team Name."
+                        android:textColorHint="@color/trans"
+                        android:textSize="14dp"
+                        android:imeOptions="actionDone"
+                        android:id="@+id/away_name"/>
+                </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="SAVE"
+                    android:id="@+id/save_set"
+                    android:onClick="save"/>
             </LinearLayout>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="SAVE"
-                android:id="@+id/save_set"
-                android:onClick="save"/>
+            <!-- Control Bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/controlbar">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="End Match"
+                    android:id="@+id/btn_end"
+                    android:onClick="endmatch"/>
+            </LinearLayout>
 
         </LinearLayout>
         <LinearLayout
@@ -96,7 +119,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/hint"
                 android:padding="1dp"
-                android:visibility="visible">
+                android:id="@+id/boardshow"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"

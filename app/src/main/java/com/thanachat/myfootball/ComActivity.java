@@ -1,5 +1,10 @@
 package com.thanachat.myfootball;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,12 +33,18 @@ public class ComActivity extends AppCompatActivity {
 
     public DatabaseReference myRef;
     public DatabaseReference match;
+    public DatabaseReference matchname;
+    public DatabaseReference matchdetail;
+    public DatabaseReference livesc;
 
     String hname;
     String aname;
+    String keys;
+    String livekeys;
+
+    int homesc;
+    int awaysc;
     int n;
-
-
 
     private TextView homesname;
     private TextView awaysname;
@@ -41,6 +53,12 @@ public class ComActivity extends AppCompatActivity {
     private ListView listmatch;
     private Button btnsave;
     private EditText homeinput;
+    LinearLayout boardshow;
+    LinearLayout endshow;
+    LinearLayout settingbar;
+
+    Notification.Builder notification;
+    final int id=11;
 
     //Array List
 //    private ArrayList<String> arrayList = new ArrayList<>( );
@@ -61,6 +79,7 @@ public class ComActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
+        //matchdetail = match.child(keys);
 
 //        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
 
@@ -104,69 +123,6 @@ public class ComActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
-        //Read Home Name
-        match.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map map = (Map)dataSnapshot.getValue();
-                String hnteam = String.valueOf(map.get("homename"));
-                homesname.setText(hnteam);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        //Read Away Name
-        match.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map map = (Map)dataSnapshot.getValue();
-                String anteam = String.valueOf(map.get("awayname"));
-                awaysname.setText(anteam);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        //Read Home Score
-        match = myRef.child("match");
-
-        match.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map map = (Map)dataSnapshot.getValue();
-                String hsc = String.valueOf(map.get("homescore"));
-                homescore.setText(hsc);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        //Read Away Score
-        match.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map map = (Map)dataSnapshot.getValue();
-                String asc = String.valueOf(map.get("awayscore"));
-                awayscore.setText(asc);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
@@ -176,6 +132,11 @@ public class ComActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
+        matchname = match.child("matchname");
+
+        boardshow = (LinearLayout)findViewById(R.id.boardshow);
+        endshow = (LinearLayout)findViewById(R.id.controlbar);
+        settingbar = (LinearLayout)findViewById(R.id.settingbar);
 
         EditText homeinput = (EditText)findViewById(R.id.home_name);
         EditText awayinput = (EditText)findViewById(R.id.away_name);
@@ -184,20 +145,110 @@ public class ComActivity extends AppCompatActivity {
 
         if (homeinput.getText().toString().length() > 0) {
             if(awayinput.getText().toString().length() > 0) {
+
+                //Notification
+                notification = new Notification.Builder(ComActivity.this);
+                notification.setSmallIcon(R.drawable.basic4pic);
+                notification.setWhen(System.currentTimeMillis());
+                notification.setContentTitle("Football Go");
+                notification.setTicker("มีแจ้งเตือนใหม่");
+                notification.setContentText("มีการแข่งขันฟุตบอลนัดใหม่");
+                Intent intent = new Intent(this, ComActivity.class);
+                PendingIntent panding = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                notification.setContentIntent(panding);
+                NotificationManager nm = (NotificationManager) getSystemService(
+                        NOTIFICATION_SERVICE
+                );
+                nm.notify(id, notification.build());
+
                 hname = homeinput.getText().toString();
                 aname = awayinput.getText().toString();
 
                 homeinput.setText("");
                 awayinput.setText("");
 
-                // Home Team updateDB
-                match.child("homename").setValue(hname);
-//                Map<String, Object> homevalue = new HashMap<String, Object>();
-//                homevalue.put("id-1", hname);
-//                myRef.updateChildren(homevalue);
+                //matchname.push().setValue(hname + " : " + homesc + " - " + aname);
 
-                // Away Team updateDB
-                match.child("awayname").setValue(aname);
+                livekeys = matchname.push().getKey();
+                matchname.child(livekeys).setValue(hname + " : " + homesc + " - " + awaysc + " : " + aname);
+
+                keys = match.push().getKey();
+                matchdetail = match.child(keys);
+//                // Home Team updateDB
+//                match.child("homename").setValue(hname);
+//
+//                // Away Team updateDB
+//                match.child("awayname").setValue(aname);
+                //Add match detail
+
+                match.child(keys).child("homename").setValue(hname);
+                match.child(keys).child("awayname").setValue(aname);
+                match.child(keys).child("homescore").setValue(0);
+                match.child(keys).child("awayscore").setValue(0);
+
+                boardshow.setVisibility(View.VISIBLE);
+                endshow.setVisibility(View.VISIBLE);
+                settingbar.setVisibility(View.GONE);
+
+                //Read Home name
+                matchdetail.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map map = (Map)dataSnapshot.getValue();
+                        String hnteam = String.valueOf(map.get("homename"));
+                        homesname.setText(hnteam);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                //Read Away name
+                matchdetail.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map map = (Map)dataSnapshot.getValue();
+                        String anteam = String.valueOf(map.get("awayname"));
+                        awaysname.setText(anteam);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                //Read Home Score
+                matchdetail.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map map = (Map)dataSnapshot.getValue();
+                        String hsc = String.valueOf(map.get("homescore"));
+                        homescore.setText(hsc);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                //Read Away Score
+                matchdetail.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map map = (Map)dataSnapshot.getValue();
+                        String asc = String.valueOf(map.get("awayscore"));
+                        awayscore.setText(asc);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
             else {
                 awayinput.setError("กรุณากรอกชื่อทีม");
@@ -215,12 +266,18 @@ public class ComActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
+        matchdetail = match.child(keys);
+        livesc = matchname.child(livekeys);
 
         homescore = (TextView)findViewById(R.id.homescore);
         String text = homescore.getText().toString();
         n = Integer.parseInt(text);
         n = n+1;
-        match.child("homescore").setValue(n);
+        matchdetail.child("homescore").setValue(n);
+        homesc = n;
+        livesc.setValue(hname + " : " + homesc + " - " + awaysc + " : " + aname);
+
+
     }
     // Del Home Score
     public void delhome (View view){
@@ -228,13 +285,17 @@ public class ComActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
+        matchdetail = match.child(keys);
+        livesc = matchname.child(livekeys);
 
         homescore = (TextView)findViewById(R.id.homescore);
         String text = homescore.getText().toString();
         n = Integer.parseInt(text);
         if(n > 0){
             n = n-1;
-            match.child("homescore").setValue(n);
+            matchdetail.child("homescore").setValue(n);
+            homesc = n;
+            livesc.setValue(hname + " : " + homesc + " - " + awaysc + " : " + aname);
         }
         else return;
     }
@@ -244,12 +305,16 @@ public class ComActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
+        matchdetail = match.child(keys);
+        livesc = matchname.child(livekeys);
 
         awayscore = (TextView)findViewById(R.id.awayscore);
         String text = awayscore.getText().toString();
         n = Integer.parseInt(text);
         n = n+1;
-        match.child("awayscore").setValue(n);
+        matchdetail.child("awayscore").setValue(n);
+        awaysc = n;
+        livesc.setValue(hname + " : " + homesc + " - " + awaysc + " : " + aname);
     }
     // Del Away Score
     public void delaway (View view){
@@ -257,14 +322,29 @@ public class ComActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
+        matchdetail = match.child(keys);
+        livesc = matchname.child(livekeys);
 
         awayscore = (TextView)findViewById(R.id.awayscore);
         String text = awayscore.getText().toString();
         n = Integer.parseInt(text);
         if(n > 0){
             n = n-1;
-            match.child("awayscore").setValue(n);
+            matchdetail.child("awayscore").setValue(n);
+            awaysc = n;
+            livesc.setValue(hname + " : " + homesc + " - " + awaysc + " : " + aname);
         }
         else return;
+    }
+
+    //End match
+    public void endmatch (View v){
+        boardshow = (LinearLayout)findViewById(R.id.boardshow);
+        endshow = (LinearLayout)findViewById(R.id.controlbar);
+        settingbar = (LinearLayout)findViewById(R.id.settingbar);
+
+        boardshow.setVisibility(View.GONE);
+        settingbar.setVisibility(View.VISIBLE);
+        endshow.setVisibility(View.GONE);
     }
 }
