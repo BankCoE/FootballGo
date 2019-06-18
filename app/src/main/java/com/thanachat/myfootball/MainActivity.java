@@ -130,14 +130,17 @@ public class MainActivity extends AppCompatActivity {
     public  void openls(View v){
         ImageButton img7 = (ImageButton)findViewById(R.id.menu_7);
         ImageButton cimg7 = (ImageButton)findViewById(R.id.mls);
+        ImageButton img71 = (ImageButton)findViewById(R.id.menu_7_1);
         if(menu7 == 0){
             cimg7.setImageResource(R.drawable.nmlsc);
             img7.setVisibility(View.VISIBLE);
+            img71.setVisibility(View.VISIBLE);
             menu7 = 1;
         }
         else{
             cimg7.setImageResource(R.drawable.nmlso);
             img7.setVisibility(View.GONE);
+            img71.setVisibility(View.GONE);
             menu7 = 0;
         }
     }
@@ -198,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
 
+    }
+
+    public void enterSCB (View v){
+        Intent goSCB = new Intent(this, ScoreboardActivity.class);
+        startActivity(goSCB);
     }
 
 

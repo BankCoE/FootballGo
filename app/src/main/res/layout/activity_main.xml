@@ -173,12 +173,21 @@
                 android:id="@+id/mls"
                 android:onClick="openls"/>
             <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mlsclick"
+            android:onClick="enterLS"
+            android:visibility="gone"
+            android:id="@+id/menu_7"
+            android:alpha="0.8"/>
+
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/mlsclick"
-                android:onClick="enterLS"
+                android:src="@drawable/nmscbo"
+                android:onClick="enterSCB"
                 android:visibility="gone"
-                android:id="@+id/menu_7"
+                android:id="@+id/menu_7_1"
                 android:alpha="0.8"/>
         </LinearLayout>
 

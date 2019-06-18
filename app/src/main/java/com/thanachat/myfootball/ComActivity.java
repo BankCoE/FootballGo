@@ -3,17 +3,22 @@ package com.thanachat.myfootball;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.ContactsContract;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -36,11 +41,26 @@ public class ComActivity extends AppCompatActivity {
     public DatabaseReference matchname;
     public DatabaseReference matchdetail;
     public DatabaseReference livesc;
+    public DatabaseReference foul;
+    public DatabaseReference keyfoul;
+    public DatabaseReference keyscb;
+
+
+    ListView listview;
+    ArrayList<String> list = new ArrayList<>();
+    private ArrayList<String> mKeys = new ArrayList<>();
 
     String hname;
     String aname;
-    String keys;
+    public static String keys;
     String livekeys;
+    String keyfoulc;
+
+
+    ImageButton homeyellow;
+    ImageButton homered;
+    ImageButton awayyellow;
+    ImageButton awayred;
 
     int homesc;
     int awaysc;
@@ -69,6 +89,10 @@ public class ComActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_com);
 
+        listview = (ListView)findViewById(R.id.listhomeyellow);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
+        listview.setAdapter(adapter);
+
 
         homesname = (TextView) findViewById(R.id.hsname);
         awaysname = (TextView) findViewById(R.id.asname);
@@ -76,10 +100,60 @@ public class ComActivity extends AppCompatActivity {
         awayscore = (TextView) findViewById(R.id.awayscore);
         homeinput = (EditText) findViewById(R.id.home_name);
 
+        homeyellow = (ImageButton)findViewById(R.id.homeyellow);
+        homered = (ImageButton)findViewById(R.id.homered);
+        awayyellow = (ImageButton)findViewById(R.id.awayyellow);
+        awayred = (ImageButton)findViewById(R.id.awayred);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         match = myRef.child("match");
-        //matchdetail = match.child(keys);
+        foul = myRef.child("foul");
+        keyfoul = foul.child("match1");
+        keyscb = myRef.child("key");
+
+//        matchdetail = match.child(keys);
+
+        //firebase change
+        keyfoul.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+//                String value = dataSnapshot.getValue(String.class);
+//                list.add(value);
+                list.add(dataSnapshot.getValue().toString());
+                String  key = dataSnapshot.getKey();
+                mKeys.add(key);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+
+                int index = mKeys.indexOf(key);
+                list.set(index, value);
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                list.remove(dataSnapshot.getValue().toString());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 //        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
 
@@ -123,6 +197,139 @@ public class ComActivity extends AppCompatActivity {
 //
 //            }
 //        });
+
+        //home yellow card
+        homeyellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ComActivity.this);
+                LayoutInflater inflater = getLayoutInflater();
+
+                View view = inflater.inflate(R.layout.dialog_foul, null);
+                builder.setView(view);
+
+                final EditText number = (EditText)view.findViewById(R.id.number);
+
+
+                builder.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msghomeyellow = "(H) Yellow : " + number.getText().toString();
+                        keyfoulc = keyfoul.push().getKey();
+                        keyfoul.child(keyfoulc).setValue(msghomeyellow);
+                    }
+                });
+
+                builder.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        //home red card
+        homered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ComActivity.this);
+                LayoutInflater inflater = getLayoutInflater();
+
+                View view = inflater.inflate(R.layout.dialog_foul, null);
+                builder.setView(view);
+
+                final EditText number = (EditText)view.findViewById(R.id.number);
+
+
+                builder.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msghomeyellow = "(H) red : " + number.getText().toString();
+                        keyfoulc = keyfoul.push().getKey();
+                        keyfoul.child(keyfoulc).setValue(msghomeyellow);
+                    }
+                });
+
+                builder.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        //away yellow card
+        awayyellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ComActivity.this);
+                LayoutInflater inflater = getLayoutInflater();
+
+                View view = inflater.inflate(R.layout.dialog_foul, null);
+                builder.setView(view);
+
+                final EditText number = (EditText)view.findViewById(R.id.number);
+
+
+                builder.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msghomeyellow = "(A) Yellow : " + number.getText().toString();
+                        keyfoulc = keyfoul.push().getKey();
+                        keyfoul.child(keyfoulc).setValue(msghomeyellow);
+                    }
+                });
+
+                builder.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        //away red card
+        awayred.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ComActivity.this);
+                LayoutInflater inflater = getLayoutInflater();
+
+                View view = inflater.inflate(R.layout.dialog_foul, null);
+                builder.setView(view);
+
+                final EditText number = (EditText)view.findViewById(R.id.number);
+
+
+                builder.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msghomeyellow = "(A) Red : " + number.getText().toString();
+                        keyfoulc = keyfoul.push().getKey();
+                        keyfoul.child(keyfoulc).setValue(msghomeyellow);
+                    }
+                });
+
+                builder.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
     }
 
 
@@ -133,6 +340,7 @@ public class ComActivity extends AppCompatActivity {
         myRef = database.getReference();
         match = myRef.child("match");
         matchname = match.child("matchname");
+        keyscb = myRef.child("key");
 
         boardshow = (LinearLayout)findViewById(R.id.boardshow);
         endshow = (LinearLayout)findViewById(R.id.controlbar);
@@ -173,7 +381,10 @@ public class ComActivity extends AppCompatActivity {
                 matchname.child(livekeys).setValue(hname + " : " + homesc + " - " + awaysc + " : " + aname);
 
                 keys = match.push().getKey();
+                Log.d("TAG",keys);
                 matchdetail = match.child(keys);
+
+                keyscb.setValue(keys);
 //                // Home Team updateDB
 //                match.child("homename").setValue(hname);
 //
@@ -185,6 +396,7 @@ public class ComActivity extends AppCompatActivity {
                 match.child(keys).child("awayname").setValue(aname);
                 match.child(keys).child("homescore").setValue(0);
                 match.child(keys).child("awayscore").setValue(0);
+
 
                 boardshow.setVisibility(View.VISIBLE);
                 endshow.setVisibility(View.VISIBLE);

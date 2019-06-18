@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name=".MainActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+         <activity
+         android:name=".MainActivity"
+         android:screenOrientation="portrait"
+         android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RulesActivity"
             android:screenOrientation="portrait" />
@@ -76,8 +76,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ComActivity"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".LSActivity"></activity>
+            android:screenOrientation="landscape" />
+        <activity android:name=".LSActivity" />
+        <activity
+            android:name=".ScoreboardActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

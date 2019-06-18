@@ -93,6 +93,13 @@
                     android:text="End Match"
                     android:id="@+id/btn_end"
                     android:onClick="endmatch"/>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/listhomeyellow">
+
+                </ListView>
             </LinearLayout>
 
         </LinearLayout>
@@ -149,51 +156,82 @@
                             android:text=""
                             android:id="@+id/hsname"
                             android:textColor="@color/white" />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:orientation="vertical">
+                        <ScrollView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:fillViewport="true">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/scorebg"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                android:padding="16dp"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="score"
-                                    android:layout_gravity="center"/>
-                                <TextView
+                                    android:background="@drawable/scorebg"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="score"
+                                        android:layout_gravity="center"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:id="@+id/homescore"
+                                        android:text="0"
+                                        android:textSize="70dp"/>
+                                </LinearLayout>
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:id="@+id/homescore"
-                                    android:text="0"
-                                    android:textSize="70dp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center">
-                                <Button
-                                    android:layout_width="wrap_content"
+                                    android:weightSum="1.0">
+                                    <Button
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:id="@+id/addhome"
+                                        android:text="+"
+                                        android:textSize="20dp"
+                                        android:onClick="addhome"/>
+                                    <Button
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:id="@+id/delhome"
+                                        android:text="-"
+                                        android:textSize="20dp"
+                                        android:onClick="delhome"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/addhome"
-                                    android:text="+"
-                                    android:textSize="20dp"
-                                    android:onClick="addhome"/>
-                                <Button
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/delhome"
-                                    android:text="-"
-                                    android:textSize="20dp"
-                                    android:onClick="delhome"/>
-                            </LinearLayout>
+                                    android:weightSum="1.0"
+                                    android:layout_gravity="center">
+                                    <ImageButton
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:src="@drawable/ycard"
+                                        android:id="@+id/homeyellow"
+                                        android:text="Foul"
+                                        android:textSize="20dp" />
+                                    <ImageButton
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:src="@drawable/rcard"
+                                        android:id="@+id/homered"
+                                        android:text="Foul"
+                                        android:textSize="20dp" />
+                                </LinearLayout>
 
-                        </LinearLayout>
+                            </LinearLayout>
+                        </ScrollView>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -213,7 +251,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/hint"
                             android:gravity="center"
-                            android:text="Home Team"
+                            android:text="Away Team"
                             android:textColor="@color/white" />
                         <TextView
                             android:layout_width="match_parent"
@@ -223,51 +261,83 @@
                             android:text=""
                             android:id="@+id/asname"
                             android:textColor="@color/white" />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:orientation="vertical">
+
+                        <ScrollView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:fillViewport="true">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/scorebg"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                android:padding="16dp"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="score"
-                                    android:layout_gravity="center"/>
-                                <TextView
+                                    android:background="@drawable/scorebg"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="score"
+                                        android:layout_gravity="center"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:id="@+id/awayscore"
+                                        android:text="0"
+                                        android:textSize="70dp"/>
+                                </LinearLayout>
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:id="@+id/awayscore"
-                                    android:text="0"
-                                    android:textSize="70dp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center">
-                                <Button
-                                    android:layout_width="wrap_content"
+                                    android:weightSum="1.0">
+                                    <Button
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:id="@+id/addaway"
+                                        android:text="+"
+                                        android:textSize="20dp"
+                                        android:onClick="addaway"/>
+                                    <Button
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:id="@+id/delaway"
+                                        android:text="-"
+                                        android:textSize="20dp"
+                                        android:onClick="delaway"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/addaway"
-                                    android:text="+"
-                                    android:textSize="20dp"
-                                    android:onClick="addaway"/>
-                                <Button
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/delaway"
-                                    android:text="-"
-                                    android:textSize="20dp"
-                                    android:onClick="delaway"/>
-                            </LinearLayout>
+                                    android:weightSum="1.0"
+                                    android:layout_gravity="center">
+                                    <ImageButton
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:src="@drawable/ycard"
+                                        android:id="@+id/awayyellow"
+                                        android:text="Foul"
+                                        android:textSize="20dp" />
+                                    <ImageButton
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:src="@drawable/rcard"
+                                        android:id="@+id/awayred"
+                                        android:text="Foul"
+                                        android:textSize="20dp" />
+                                </LinearLayout>
 
-                        </LinearLayout>
+                            </LinearLayout>
+                        </ScrollView>
+
 
                     </LinearLayout>
 

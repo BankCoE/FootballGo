@@ -42,6 +42,7 @@ public class GmapPSU extends FragmentActivity {
     String cmtkey;
 
     ListView listview;
+
     Button btncmt;
     Button cmtback;
     Button cmt;
